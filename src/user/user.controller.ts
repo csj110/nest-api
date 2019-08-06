@@ -20,8 +20,6 @@ export class UserController {
   }
 
   @Get('api/users')
-  @UseGuards(new AuthGuard())
-  @UsePipes(new ValidationPipe())
   async showAllUsers(@User() user: any): Promise<UserRO[]> {
     return await this.userService.showAll();
   }

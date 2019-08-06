@@ -1,11 +1,13 @@
 import { ValidationPipe } from './../shared/validation.pipe';
 import { UserService } from './user.service';
-import { Controller, Post, Get, Body, UsePipes } from '@nestjs/common';
+import { Controller, Post, Get, Body, UsePipes, UseGuards, Logger } from '@nestjs/common';
 import { UserDTO, UserRO } from './user.dto';
+import { AuthGuard } from 'src/shared/auth.guard';
+import { User } from './user.decorator';
 
 @Controller()
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
   @Post('login')
   async login(@Body() data: UserDTO): Promise<UserRO> {
     return await this.userService.login(data);
@@ -18,8 +20,9 @@ export class UserController {
   }
 
   @Get('api/users')
+  @UseGuards(new AuthGuard())
   @UsePipes(new ValidationPipe())
-  async showAllUsers(): Promise<UserRO[]> {
+  async showAllUsers(@User() user: any): Promise<UserRO[]> {
     return await this.userService.showAll();
   }
 }

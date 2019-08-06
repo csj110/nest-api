@@ -4,6 +4,7 @@ import {
   HttpException,
   ArgumentsHost,
   Logger,
+  HttpStatus,
 } from '@nestjs/common';
 
 @Catch()
@@ -13,7 +14,7 @@ export class HttpErrorFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     const request = ctx.getRequest();
 
-    const status = exception.getStatus();
+    const status = request.getStatus || HttpStatus.INTERNAL_SERVER_ERROR;
     const errResponde = {
       code: status,
       timeStamp: new Date().toLocaleDateString(),

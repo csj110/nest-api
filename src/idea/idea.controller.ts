@@ -7,10 +7,12 @@ import {
   Delete,
   Body,
   Param,
+  UsePipes,
 } from '@nestjs/common';
 import { IdeaService } from './idea.service';
+import { ValidationPipe } from 'src/shared/validation.pipe';
 
-@Controller('api/ideas')
+@Controller('api/idea/all')
 export class IdeaController {
   constructor(private ideaService: IdeaService) {}
   @Get()
@@ -19,6 +21,7 @@ export class IdeaController {
   }
 
   @Post()
+  @UsePipes(new ValidationPipe())
   createIdea(@Body() data: IdeaDTO) {
     return this.ideaService.create(data);
   }

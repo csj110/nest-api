@@ -1,17 +1,18 @@
-import { IsNotEmpty } from 'class-validator';
-import { IdeaEntity } from 'src/idea/idea.entity';
+import { IdeaRO } from './../idea/idea.dto'
+import { IsNotEmpty } from 'class-validator'
 
 export class UserDTO {
   @IsNotEmpty()
-  username: string;
+  username: string
   @IsNotEmpty()
-  password: string;
+  password: string
 }
 
 export class UserRO {
-  id?: string;
-  username: string;
-  created: Date;
-  token?: string;
-  ideas?: IdeaEntity[];
+  id?: string
+  username: string
+  created: Date
+  token?: string
+  ideas?: IdeaRO[]
+  bookmarks?: IdeaRO[]
 }

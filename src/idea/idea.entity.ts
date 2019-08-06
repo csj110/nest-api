@@ -5,26 +5,37 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-} from 'typeorm';
-import { UserEntity } from 'src/user/user.entity';
+  ManyToMany,
+  JoinTable,
+} from 'typeorm'
+import { UserEntity } from 'src/user/user.entity'
+import { userInfo } from 'os'
 
 @Entity('idea')
 export class IdeaEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: string
 
   @Column('text')
-  idea: string;
+  idea: string
 
   @Column('text')
-  desc: string;
+  desc: string
 
   @CreateDateColumn()
-  created: Date;
+  created: Date
 
   @UpdateDateColumn()
-  updated: Date;
+  updated: Date
 
   @ManyToOne(type => UserEntity, user => user.ideas)
-  author: UserEntity;
+  author: UserEntity
+
+  @ManyToMany(type => UserEntity, { cascade: true })
+  @JoinTable()
+  upvotes: UserEntity[]
+
+  @ManyToMany(type => UserEntity, { cascade: true })
+  @JoinTable()
+  downvotes: UserEntity[]
 }

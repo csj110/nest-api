@@ -19,7 +19,7 @@ export class UserController {
     return await this.userService.register(data);
   }
 
-  @Get('api/users')
+  @Get('api/user/all')
   async showAllUsers(@User() user: any): Promise<UserRO[]> {
     return await this.userService.showAll();
   }

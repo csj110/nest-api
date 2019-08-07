@@ -1,4 +1,4 @@
-import { IdeaDTO } from './idea.dto';
+import { IdeaDTO, IdeaRO } from './idea.dto';
 import {
   Controller,
   Get,
@@ -15,6 +15,8 @@ import { IdeaService } from './idea.service';
 import { ValidationPipe } from 'src/shared/validation.pipe';
 import { AuthGuard } from 'src/shared/auth.guard';
 import { User } from 'src/user/user.decorator';
+import { UserRO } from 'src/user/user.dto';
+import { Votes } from 'src/shared/votes.enum';
 
 @Controller('api/idea')
 export class IdeaController {
@@ -55,5 +57,33 @@ export class IdeaController {
   async removeIdea(@Param('id') id: string, @User('id') user: string) {
     this.logData({ id, user })
     return await this.ideaService.destory(id, user);
+  }
+
+  @Post(':id/bookmark')
+  @UseGuards(new AuthGuard())
+  async  bookmarkIdea(@Param("id") id: string, @User('id') user: string): Promise<UserRO> {
+    this.logData({ id, user })
+    return await this.ideaService.bookmark(id, user)
+  }
+
+  @Delete(':id/bookmark')
+  @UseGuards(new AuthGuard())
+  async unbookmarkIdea(@Param("id") id: string, @User('id') user: string): Promise<UserRO> {
+    this.logData({ id, user })
+    return await this.ideaService.unbookmark(id, user)
+  }
+
+  @Post(':id/upvote')
+  @UseGuards(new AuthGuard())
+  async upvoteIdea(@Param("id") id: string, @User('id') user: string): Promise<IdeaRO> {
+    this.logData({ id, user })
+    return await this.ideaService.dealVote(id, user, Votes.UP)
+  }
+
+  @Delete(':id/downvote')
+  @UseGuards(new AuthGuard())
+  async downvote(@Param("id") id: string, @User('id') user: string): Promise<IdeaRO> {
+    this.logData({ id, user })
+    return await this.ideaService.dealVote(id, user, Votes.DOWN)
   }
 }

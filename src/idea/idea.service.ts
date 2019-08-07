@@ -5,6 +5,8 @@ import { IdeaEntity } from './idea.entity'
 import { InjectRepository } from '@nestjs/typeorm'
 import { IdeaDTO, IdeaRO } from './idea.dto'
 import { UserEntity } from 'src/user/user.entity'
+import { Votes } from 'src/shared/votes.enum';
+import { deserialize } from 'class-transformer';
 
 @Injectable()
 export class IdeaService {
@@ -13,7 +15,7 @@ export class IdeaService {
     private ideaRepository: Repository<IdeaEntity>,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
-  ) {}
+  ) { }
 
   private toResposeObject(idea: IdeaEntity): IdeaRO {
     const res: any = { ...idea, author: idea.author.toResponseObject() }
@@ -29,6 +31,23 @@ export class IdeaService {
   private ensureOwnerShip(idea: IdeaEntity, userid: string) {
     if (idea.author.id !== userid) {
       throw new HttpException('action is forbidden', HttpStatus.UNAUTHORIZED)
+    }
+  }
+
+  private async  vote(idea: IdeaEntity, user: UserEntity, vote: Votes): Promise<IdeaRO> {
+    const opposite = vote === Votes.UP ? Votes.DOWN : Votes.UP;
+    if (
+      idea[opposite].find(voter => voter.id === user.id) ||
+      idea[vote].find(voter => voter.id === user.id)
+    ) {
+      idea[opposite] = idea[opposite].filter(voter => voter.id !== user.id);
+      idea[vote] = idea[vote].filter(voter => voter.id !== user.id)
+      await this.ideaRepository.save(idea);
+      return this.toResposeObject(idea)
+    } else {
+      idea[vote].push(user)
+      await this.ideaRepository.save(idea)
+      return this.toResposeObject(idea)
     }
   }
 
@@ -90,5 +109,30 @@ export class IdeaService {
     this.ensureOwnerShip(idea, userId)
     await this.ideaRepository.delete({ id })
     return this.toResposeObject(idea)
+  }
+
+  async bookmark(id: string, userId: string): Promise<UserRO> {
+    const idea = await this.ideaRepository.findOne({ where: { id } })
+    if (!idea) {
+      throw new HttpException('not found idea', HttpStatus.BAD_REQUEST)
+    }
+    const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['bookmarks'] })
+    user.bookmarks = [...user.bookmarks, idea]
+    await this.userRepository.save(user);
+    Logger.log(user)
+    return user.toResponseObject()
+  }
+
+  async unbookmark(id: string, userId: string): Promise<UserRO> {
+    const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['bookmarks'] })
+    user.bookmarks = user.bookmarks.filter(item => item.id !== id)
+    await this.userRepository.save(user);
+    return user.toResponseObject()
+  }
+
+  async dealVote(id: string, userId: string, vote: Votes): Promise<IdeaRO> {
+    const idea = await this.ideaRepository.findOne({ where: { id }, relations: ['author', 'upvotes', 'downvotes'] })
+    const user = await this.userRepository.findOne({ id: userId })
+    return await this.vote(idea, user, vote)
   }
 }

@@ -22,10 +22,7 @@ export class HttpErrorFilter implements ExceptionFilter {
       timeStamp: new Date().toLocaleDateString(),
       path: request.url,
       method: request.method,
-      message:
-        status == HttpStatus.INTERNAL_SERVER_ERROR
-          ? 'internal error'
-          : exception.message.error || exception.message || null,
+      message: exception.message.error || exception.message || null,
     }
     Logger.error(
       `${request.method} ${request.url}`,

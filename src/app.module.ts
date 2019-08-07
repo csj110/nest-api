@@ -6,9 +6,10 @@ import { AppService } from './app.service';
 import { IdeaModule } from './idea/idea.module';
 import { APP_FILTER } from '@nestjs/core';
 import { UserModule } from './user/user.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), IdeaModule, UserModule],
+  imports: [TypeOrmModule.forRoot(), IdeaModule, UserModule, CommentModule],
   controllers: [AppController],
   providers: [
     AppService,

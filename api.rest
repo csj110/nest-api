@@ -38,4 +38,11 @@ content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNTBjYjc0LTYyZTUtNDkzMy05NGQ0LWZmMGJjY2ZiOTZjYSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJpYXQiOjE1NjUxMzgzOTQsImV4cCI6MTU2NTc0MzE5NH0.MUzkuq4_1ZLV7ER6-xbSzzWzUJB8CEa9-6Wdaf46XSY
 
 ###
-GET http://localhost:3000/api/user/all HTTP/1.1
+GET http://localhost:3000/api/comment/user HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNTBjYjc0LTYyZTUtNDkzMy05NGQ0LWZmMGJjY2ZiOTZjYSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJpYXQiOjE1NjUxMzgzOTQsImV4cCI6MTU2NTc0MzE5NH0.MUzkuq4_1ZLV7ER6-xbSzzWzUJB8CEa9-6Wdaf46XSY
+
+###
+DELETE  http://localhost:3000/api/comment/730246ec-97b2-486a-a523-77a2e43aa0f8 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNTBjYjc0LTYyZTUtNDkzMy05NGQ0LWZmMGJjY2ZiOTZjYSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJpYXQiOjE1NjUxMzgzOTQsImV4cCI6MTU2NTc0MzE5NH0.MUzkuq4_1ZLV7ER6-xbSzzWzUJB8CEa9-6Wdaf46XSY
+

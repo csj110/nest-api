@@ -3,7 +3,7 @@
   "host": "localhost",
   "port": "5432",
   "username": "postgres",
-  "password": "199411101110",
+  "password": "1",
   "database": "ideas",
   "synchronize": true,
   "logging": true,

@@ -11,7 +11,7 @@ import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [GraphQLModule.forRoot({
-    typePaths: ['./**/*graphql']
+    typePaths: ['./**/*.graphql'],
   }),
   TypeOrmModule.forRoot(), IdeaModule, UserModule, CommentModule],
   controllers: [AppController],

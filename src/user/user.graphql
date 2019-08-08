@@ -9,4 +9,16 @@ type User {
 
 type Query {
   users(page: Int): [User!]
+  user(username:String) : User!
+  whoami:User
+}
+
+type Auth {
+  username: String!
+  token: String!
+}
+
+type Mutation {
+  login(username: String!, password: String!): Auth!
+  register(username: String!, password: String!): Auth!
 }

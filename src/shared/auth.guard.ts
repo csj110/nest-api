@@ -8,16 +8,27 @@ import {
 } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import "dotenv/config"
+import { GqlExecutionContext } from '@nestjs/graphql';
+import { removeAllListeners } from 'cluster';
+import { createTextChangeRange } from 'typescript';
 @Injectable()
 export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
-    const auth = req.headers.authorization;
-    if (!auth) {
-      return false;
+    if (req) {
+      if (!req.headers.authorization) {
+        return false;
+      }
+      req.user = await this.validateToken(req.headers.authorization);
+      return true;
+    } else {
+      const ctx: any = GqlExecutionContext.create(context).getContext();
+      if (!ctx.headers.authorization) {
+        return false;
+      }
+      ctx.user = await this.validateToken(ctx.headers.authorization);
+      return true;
     }
-    req.user = await this.validateToken(auth);
-    return true;
   }
 
   async validateToken(auth: string) {

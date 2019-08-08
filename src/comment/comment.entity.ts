@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, CreateDateColumn, Column, ManyToOne, Jo
 import { UserEntity } from "src/user/user.entity";
 import { IdeaEntity } from "src/idea/idea.entity";
 
-@Entity('commnet')
+@Entity('commnent')
 export class CommentEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

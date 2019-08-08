@@ -6,7 +6,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { IdeaDTO, IdeaRO } from './idea.dto'
 import { UserEntity } from 'src/user/user.entity'
 import { Votes } from 'src/shared/votes.enum';
-import { deserialize } from 'class-transformer';
 
 @Injectable()
 export class IdeaService {
@@ -51,9 +50,14 @@ export class IdeaService {
     }
   }
 
-  async showAll(): Promise<IdeaRO[]> {
+  async showAllOrder(page: number = 1, order: boolean = false): Promise<IdeaRO[]> {
     const ideas = await this.ideaRepository.find({
-      relations: ['author', 'upvotes', 'downvotes'],
+      relations: ['author', 'upvotes', 'downvotes', "comments"],
+      take: 8,
+      skip: 8 * (page - 1),
+      order: order && {
+        created: "DESC"
+      }
     })
     Logger.log(ideas)
     return ideas.map(idea => this.toResposeObject(idea))
@@ -69,7 +73,7 @@ export class IdeaService {
   async read(id: string): Promise<IdeaRO> {
     const idea = await this.ideaRepository.findOne({
       where: { id },
-      relations: ['author'],
+      relations: ['author', 'comments'],
     })
     if (!idea) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
@@ -93,7 +97,7 @@ export class IdeaService {
     await this.ideaRepository.update({ id }, data)
     idea = await this.ideaRepository.findOne({
       where: { id },
-      relations: ['author'],
+      relations: ['author', 'comments'],
     })
     return this.toResposeObject(idea)
   }
@@ -131,7 +135,7 @@ export class IdeaService {
   }
 
   async dealVote(id: string, userId: string, vote: Votes): Promise<IdeaRO> {
-    const idea = await this.ideaRepository.findOne({ where: { id }, relations: ['author', 'upvotes', 'downvotes'] })
+    const idea = await this.ideaRepository.findOne({ where: { id }, relations: ['author', 'upvotes', 'downvotes', 'comment'] })
     const user = await this.userRepository.findOne({ id: userId })
     return await this.vote(idea, user, vote)
   }

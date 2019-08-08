@@ -10,6 +10,7 @@ import {
   UsePipes,
   UseGuards,
   Logger,
+  Query,
 } from '@nestjs/common';
 import { IdeaService } from './idea.service';
 import { ValidationPipe } from 'src/shared/validation.pipe';
@@ -20,16 +21,24 @@ import { Votes } from 'src/shared/votes.enum';
 
 @Controller('api/idea')
 export class IdeaController {
+
   constructor(private ideaService: IdeaService) { }
+
   private logger = new Logger('IdeaController');
   private logData(opts: any) {
     opts.id && this.logger.log('idea' + JSON.stringify(opts.id));
     opts.data && this.logger.log('body' + JSON.stringify(opts.data));
     opts.user && this.logger.log('user' + JSON.stringify(opts.user));
   }
+
   @Get('all')
-  showAllIdea() {
-    return this.ideaService.showAll();
+  showAllIdea(@Query('page') page: number) {
+    return this.ideaService.showAllOrder(page);
+  }
+
+  @Get('newest')
+  showNewestIdea(@Query('page') page: number) {
+    return this.ideaService.showAllOrder(page, true);
   }
 
   @Post()

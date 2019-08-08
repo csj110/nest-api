@@ -9,7 +9,7 @@ content-type: application/json
 
 
 ###
-GET http://localhost:3000/api/idea/all HTTP/1.1
+GET http://localhost:3000/api/idea/newest HTTP/1.1
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNTBjYjc0LTYyZTUtNDkzMy05NGQ0LWZmMGJjY2ZiOTZjYSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJpYXQiOjE1NjUxMzgzOTQsImV4cCI6MTU2NTc0MzE5NH0.MUzkuq4_1ZLV7ER6-xbSzzWzUJB8CEa9-6Wdaf46XSY
 
@@ -28,21 +28,51 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNTBjYjc0L
 POST http://localhost:3000/api/idea/6064f56b-8117-4b59-9f6b-eab7e5186817/bookmark HTTP/1.1
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNTBjYjc0LTYyZTUtNDkzMy05NGQ0LWZmMGJjY2ZiOTZjYSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJpYXQiOjE1NjUxMzgzOTQsImV4cCI6MTU2NTc0MzE5NH0.MUzkuq4_1ZLV7ER6-xbSzzWzUJB8CEa9-6Wdaf46XSY
+
+
 ###
 POST http://localhost:3000/api/idea/6064f56b-8117-4b59-9f6b-eab7e5186817/upvote HTTP/1.1
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNTBjYjc0LTYyZTUtNDkzMy05NGQ0LWZmMGJjY2ZiOTZjYSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJpYXQiOjE1NjUxMzgzOTQsImV4cCI6MTU2NTc0MzE5NH0.MUzkuq4_1ZLV7ER6-xbSzzWzUJB8CEa9-6Wdaf46XSY
+
+
 ###
 DELETE  http://localhost:3000/api/idea/7d373323-6104-4f48-9449-6a5c0e847ee5/downvote HTTP/1.1
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNTBjYjc0LTYyZTUtNDkzMy05NGQ0LWZmMGJjY2ZiOTZjYSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJpYXQiOjE1NjUxMzgzOTQsImV4cCI6MTU2NTc0MzE5NH0.MUzkuq4_1ZLV7ER6-xbSzzWzUJB8CEa9-6Wdaf46XSY
 
+
+###
+POST http://localhost:3000/api/comment/idea/af54b354-6822-4225-9cc5-73bc1f116989 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNTBjYjc0LTYyZTUtNDkzMy05NGQ0LWZmMGJjY2ZiOTZjYSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJpYXQiOjE1NjUxMzgzOTQsImV4cCI6MTU2NTc0MzE5NH0.MUzkuq4_1ZLV7ER6-xbSzzWzUJB8CEa9-6Wdaf46XSY
+
+{
+	"comment":"comments7"
+}
+
+
 ###
 GET http://localhost:3000/api/comment/user HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNTBjYjc0LTYyZTUtNDkzMy05NGQ0LWZmMGJjY2ZiOTZjYSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJpYXQiOjE1NjUxMzgzOTQsImV4cCI6MTU2NTc0MzE5NH0.MUzkuq4_1ZLV7ER6-xbSzzWzUJB8CEa9-6Wdaf46XSY
+
+
+
+###
+GET http://localhost:3000/api/comment/idea/af54b354-6822-4225-9cc5-73bc1f116989 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNTBjYjc0LTYyZTUtNDkzMy05NGQ0LWZmMGJjY2ZiOTZjYSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJpYXQiOjE1NjUxMzgzOTQsImV4cCI6MTU2NTc0MzE5NH0.MUzkuq4_1ZLV7ER6-xbSzzWzUJB8CEa9-6Wdaf46XSY
+
+
+###
+GET http://localhost:3000/api/comment/c3c01500-01a9-43b1-b855-323967cd7189 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNTBjYjc0LTYyZTUtNDkzMy05NGQ0LWZmMGJjY2ZiOTZjYSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJpYXQiOjE1NjUxMzgzOTQsImV4cCI6MTU2NTc0MzE5NH0.MUzkuq4_1ZLV7ER6-xbSzzWzUJB8CEa9-6Wdaf46XSY
+
+
 
 ###
 DELETE  http://localhost:3000/api/comment/730246ec-97b2-486a-a523-77a2e43aa0f8 HTTP/1.1
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNTBjYjc0LTYyZTUtNDkzMy05NGQ0LWZmMGJjY2ZiOTZjYSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJpYXQiOjE1NjUxMzgzOTQsImV4cCI6MTU2NTc0MzE5NH0.MUzkuq4_1ZLV7ER6-xbSzzWzUJB8CEa9-6Wdaf46XSY
 
+###
+GET https://appideagenerator.com/call.php HTTP/1.1

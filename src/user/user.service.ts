@@ -34,8 +34,11 @@ export class UserService {
     return user.toResponseObject(true);
   }
 
-  async showAll(): Promise<UserRO[]> {
-    const users = await this.userRepository.find({ relations: ['ideas', 'bookmarks'] });
+  async showAll(page: number = 1): Promise<UserRO[]> {
+    const users = await this.userRepository.find({
+      relations: ['ideas', 'bookmarks'], take: 8,
+      skip: 8 * (page - 1)
+    });
     return users.map(user => user.toResponseObject());
   }
 }

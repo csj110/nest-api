@@ -1,5 +1,6 @@
 import { HttpErrorFilter } from './shared/http-error.filter';
 import { Module } from '@nestjs/common';
+import { GraphQLModule } from "@nestjs/graphql";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,7 +10,10 @@ import { UserModule } from './user/user.module';
 import { CommentModule } from './comment/comment.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), IdeaModule, UserModule, CommentModule],
+  imports: [GraphQLModule.forRoot({
+    typePaths: ['./**/*graphql']
+  }),
+  TypeOrmModule.forRoot(), IdeaModule, UserModule, CommentModule],
   controllers: [AppController],
   providers: [
     AppService,
@@ -19,4 +23,4 @@ import { CommentModule } from './comment/comment.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

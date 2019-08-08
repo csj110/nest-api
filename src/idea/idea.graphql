@@ -3,7 +3,7 @@ type Idea {
   created: String!
   updated: String!
   idea: String!
-  description: String!
+  desc: String!
   author: User!
   upvotes: Int!
   downvotes: Int!
@@ -13,4 +13,14 @@ type Idea {
 type Query {
   ideas(page: Int, newest: Boolean): [Idea!]!
   idea(id: ID!): Idea!
+}
+
+type Mutation{
+  createIdea(idea:String!,desc:String!):Idea!
+  updateIdes(id:ID!,idea:String,desc:String) :Idea!
+  deleteIdea(id:ID) :Idea!
+  upvote(id:!) :Idea!
+  downvotes(id:ID!) :Idea!
+  bookmark(id:ID!) :User!
+  unbookmark(id:ID):User!
 }

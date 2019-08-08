@@ -1,5 +1,14 @@
-type Comment{
-  id:ID!
-  created:String
-  comment:String
+type Comment {
+  id: ID!
+  created: String
+  comment: String!
+}
+
+type Query {
+  comment(id: String!): Comment
+}
+
+type Mutation {
+  createComment(idea: ID!, comment: String!): Comment
+  deleteComment(id: ID!): Comment
 }

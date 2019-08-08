@@ -15,4 +15,5 @@ export class UserRO {
   token?: string
   ideas?: IdeaRO[]
   bookmarks?: IdeaRO[]
+  comments:Comment
 }

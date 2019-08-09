@@ -16,6 +16,8 @@ export class IdeaService {
     private userRepository: Repository<UserEntity>,
   ) { }
 
+
+  // TODO 验证每次用户和idea comment 都能取到
   private toResposeObject(idea: IdeaEntity): IdeaRO {
     const res: any = { ...idea, author: idea.author.toResponseObject() }
     if (res.upvotes) {
@@ -65,6 +67,9 @@ export class IdeaService {
 
   async create(data: IdeaDTO, userId: string): Promise<IdeaRO> {
     const user = await this.userRepository.findOne({ where: { id: userId } })
+    if (!user) {
+      throw new HttpException('no user', HttpStatus.BAD_REQUEST)
+    }
     const idea = await this.ideaRepository.create({ ...data, author: user })
     await this.ideaRepository.save(idea)
     return this.toResposeObject({ ...idea, author: user })
@@ -121,6 +126,9 @@ export class IdeaService {
       throw new HttpException('not found idea', HttpStatus.BAD_REQUEST)
     }
     const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['bookmarks'] })
+    if (!user) {
+      throw new HttpException('no such a user', HttpStatus.BAD_REQUEST)
+    }
     user.bookmarks = [...user.bookmarks, idea]
     await this.userRepository.save(user);
     Logger.log(user)
@@ -129,6 +137,9 @@ export class IdeaService {
 
   async unbookmark(id: string, userId: string): Promise<UserRO> {
     const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['bookmarks'] })
+    if (!user) {
+      throw new HttpException('no such a user', HttpStatus.BAD_REQUEST)
+    }
     user.bookmarks = user.bookmarks.filter(item => item.id !== id)
     await this.userRepository.save(user);
     return user.toResponseObject()
@@ -137,6 +148,9 @@ export class IdeaService {
   async dealVote(id: string, userId: string, vote: Votes): Promise<IdeaRO> {
     const idea = await this.ideaRepository.findOne({ where: { id }, relations: ['author', 'upvotes', 'downvotes', 'comment'] })
     const user = await this.userRepository.findOne({ id: userId })
+    if (!user || !idea) {
+      throw new HttpException('idea not exist / no such a user', HttpStatus.BAD_REQUEST)
+    }
     return await this.vote(idea, user, vote)
   }
 }

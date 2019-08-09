@@ -11,7 +11,7 @@ export class UserService {
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
     @InjectRepository(IdeaEntity) private ideareposity: Repository<IdeaEntity>,
-  ) {}
+  ) { }
 
   async login(data: UserDTO): Promise<UserRO> {
     const { username, password } = data
@@ -28,8 +28,8 @@ export class UserService {
   async register(data: UserDTO): Promise<UserRO> {
     const { username } = data
     let user = await this.userRepository.findOne({ where: { username } })
-    if (user) {
-      throw new HttpException('user already existed', HttpStatus.BAD_REQUEST)
+    if (!user) {
+      throw new HttpException('no such a user', HttpStatus.BAD_REQUEST)
     }
     user = await this.userRepository.create(data)
     await this.userRepository.save(user)
@@ -50,6 +50,9 @@ export class UserService {
       where: { username },
       relations: ['ideas', 'bookmarks'],
     })
+    if (!user) {
+      throw new HttpException('no such a user', HttpStatus.BAD_REQUEST)
+    }
     return user.toResponseObject()
   }
 }

@@ -15,9 +15,9 @@ export class CommentService {
     private ideaRepository: Repository<IdeaEntity>,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
-  ) {}
+  ) { }
 
-  private toResoponseObkject(comment: CommentEntity) {
+  private toResoponseObject(comment: CommentEntity) {
     comment.author = comment.author.toResponseObject()
     return comment
   }
@@ -27,8 +27,10 @@ export class CommentService {
       where: { id },
       relations: ['author', 'idea'],
     })
-
-    return this.toResoponseObkject(res)
+    if (!res) {
+      throw new HttpException('not found', HttpStatus.NOT_FOUND)
+    }
+    return this.toResoponseObject(res)
   }
 
   async showByIdea(id: string, page: number = 1) {
@@ -38,7 +40,7 @@ export class CommentService {
       take: 8,
       skip: 8 * (page - 1),
     })
-    return comments.map(comment => this.toResoponseObkject(comment))
+    return comments.map(comment => this.toResoponseObject(comment))
   }
 
   async showByUser(id: string, page: number = 1) {
@@ -48,12 +50,15 @@ export class CommentService {
       take: 8,
       skip: 8 * (page - 1),
     })
-    return comments.map(comment => this.toResoponseObkject(comment))
+    return comments.map(comment => this.toResoponseObject(comment))
   }
 
   async create(ideaId: string, userId: string, data: CommentDTO) {
     const idea = await this.ideaRepository.findOne({ where: { id: ideaId } })
     const user = await this.userRepository.findOne({ where: { id: userId } })
+    if (!user || !idea) {
+      throw new HttpException('user or idea not found', HttpStatus.BAD_REQUEST)
+    }
     const comment: CommentEntity = await this.commentRepository.create({
       ...data,
       idea,
@@ -69,6 +74,9 @@ export class CommentService {
       where: { id },
       relations: ['author', 'idea'],
     })
+    if (!comment) {
+      throw new HttpException('no such comment', HttpStatus.BAD_REQUEST)
+    }
     if (userid !== comment.author.id) {
       throw new HttpException('no auth to del', HttpStatus.UNAUTHORIZED)
     }

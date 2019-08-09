@@ -3,7 +3,6 @@ import { UserService } from "./user.service";
 import { CommentService } from "src/comment/comment.service";
 import { UseGuards, Logger } from "@nestjs/common";
 import { AuthGuard } from "src/shared/auth.guard";
-import { User } from "./user.decorator";
 
 @Resolver('User')
 export class UserResolver {

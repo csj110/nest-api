@@ -19,7 +19,7 @@ export class IdeaResolver {
   constructor(
     private ideaService: IdeaService,
     private commentService: CommentService,
-  ) {}
+  ) { }
 
   @Query()
   async ideas(@Args('page') page: number, @Args('newest') newest: boolean) {
@@ -32,9 +32,8 @@ export class IdeaResolver {
   }
 
   @ResolveProperty()
-  async comments(@Parent() user, @Args('page') page: number) {
-    const { id } = user
-    return await this.commentService.showByUser(id, page)
+  async comments(@Parent() { id }, @Args('page') page: number) {
+    return await this.commentService.showByIdea(id, page)
   }
 
   @Mutation()

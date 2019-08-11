@@ -6,13 +6,15 @@ import { User } from './user.decorator';
 
 @Controller()
 export class UserController {
+
   constructor(private userService: UserService) { }
-  @Post('login')
+
+  @Post('auth/login')
   async login(@Body() data: UserDTO): Promise<UserRO> {
     return await this.userService.login(data);
   }
 
-  @Post('register')
+  @Post('auth/register')
   @UsePipes(new ValidationPipe())
   async register(@Body() data: UserDTO): Promise<UserRO> {
     return await this.userService.register(data);

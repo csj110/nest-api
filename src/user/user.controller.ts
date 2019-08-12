@@ -29,17 +29,17 @@ export class UserController {
     return await this.userService.register(data)
   }
 
+  @Get('auth/whoami')
+  @UseGuards(new AuthGuard())
+  async whoami(@User('username') username: string) {
+    return this.userService.read(username)
+  }
+
   @Get('api/user/all')
   async showAllUsers(
     @User() user: any,
     @Query('page') page: number,
   ): Promise<UserRO[]> {
     return await this.userService.showAll()
-  }
-
-  @Get('api/user/whoami')
-  @UseGuards(new AuthGuard())
-  async whoami(@User('username') username: string) {
-    return this.userService.read(username)
   }
 }

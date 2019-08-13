@@ -2,6 +2,7 @@ import { IsString } from 'class-validator'
 import { UserRO } from 'src/user/user.dto'
 
 export class IdeaDTO {
+  id?: string
   @IsString()
   idea: string
   @IsString()
